@@ -7,17 +7,7 @@ import {
   GestureDetector,
   TapGesture,
 } from "react-native-gesture-handler";
-
-const fetchImage = async () => {
-  try {
-    const response = await fetch("https://api.waifu.im/search");
-    const json = await response.json();
-    return json.images[0];
-  } catch (err) {
-    console.error.bind(err);
-  }
-  return {};
-};
+import { fetchImage } from "../api/fetchImage";
 
 export const WaifuImage = ({ doubleTap }: { doubleTap: TapGesture }) => {
   const [isFetching, setFetching] = useState(false);
