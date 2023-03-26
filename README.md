@@ -1,4 +1,5 @@
 # Mai Waifu
+(Screenshot of Menu)[https://share.icloud.com/photos/0f4NO_ICW3bK08buBle3jDuBQ]
 ## What is the is project about?
 Mai Waifu is a mobile app that lets users find and and download images of cute female anime/manga/video game characters.
 ## What we plan to do next
