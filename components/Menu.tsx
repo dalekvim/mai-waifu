@@ -1,3 +1,4 @@
+import * as Linking from "expo-linking";
 import { StyleSheet, Text, View } from "react-native";
 import { GestureDetector, TapGesture } from "react-native-gesture-handler";
 
@@ -32,7 +33,18 @@ export const Menu = ({ doubleTap }: { doubleTap: TapGesture }) => {
           </Text>
           {"\n"}
           {"\n"}
-          <Text>This app was made possible by the wonderful waifu.im API.</Text>
+          <Text>
+            This app was made possible by the wonderful{" "}
+            <Text
+              onPress={() => {
+                Linking.openURL("https://www.waifu.im/");
+              }}
+              style={{ color: "skyblue" }}
+            >
+              Waifu.im API
+            </Text>
+            .
+          </Text>
         </Text>
       </View>
     </GestureDetector>
