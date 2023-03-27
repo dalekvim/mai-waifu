@@ -11,20 +11,19 @@ export const Menu = ({ doubleTap }: { doubleTap: TapGesture }) => {
           {"\n"}
           {"\n"}
           <Text>
-            Welcome to Mai Waifu the easy to use app for pictures of cute anime
-            girls.
+            Welcome to Mai Waifu the easy to use app to find your waifu.
           </Text>
           {"\n"}
           {"\n"}
           <Text>
-            <Text style={styles.bold}>Double tap</Text> to start using and
-            toggle this menu.
+            <Text style={styles.bold}>Double tap</Text> to start using the app
+            and toggle this menu.
           </Text>
           {"\n"}
           {"\n"}
           <Text>
-            <Text style={styles.bold}>Long press</Text> on a girl you like to
-            save.
+            <Text style={styles.bold}>Long press</Text> on a girl you like to go
+            to her source.
           </Text>
           {"\n"}
           {"\n"}
