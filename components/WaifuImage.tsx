@@ -1,5 +1,6 @@
 import { Image } from "expo-image";
-import * as MediaLibrary from "expo-media-library";
+import * as Linking from "expo-linking";
+// import * as MediaLibrary from "expo-media-library";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, StyleSheet, Text, View } from "react-native";
 import {
@@ -8,23 +9,24 @@ import {
   TapGesture,
 } from "react-native-gesture-handler";
 import { fetchImage } from "../api/fetchImage";
+import { emptyImage } from "../constants/emptyImage";
 
 export const WaifuImage = ({ doubleTap }: { doubleTap: TapGesture }) => {
   const [isFetching, setFetching] = useState(false);
-  const [current, setCurrent] = useState("");
-  const [prefetched, setPrefetched] = useState("");
+  const [current, setCurrent] = useState(emptyImage);
+  const [prefetched, setPrefetched] = useState(emptyImage);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     fetchImage()
-      .then(({ url }) => {
-        setCurrent(url);
+      .then((image) => {
+        setCurrent(image);
       })
       .catch((err) => console.error.bind(err));
     fetchImage()
-      .then(({ url }) => {
-        Image.prefetch(url);
-        setPrefetched(url);
+      .then((image) => {
+        Image.prefetch(image.url);
+        setPrefetched(image);
       })
       .catch((err) => console.error.bind(err));
   }, []);
@@ -33,42 +35,42 @@ export const WaifuImage = ({ doubleTap }: { doubleTap: TapGesture }) => {
     setCurrent(prefetched);
     setFetching(true);
     try {
-      const { url } = await fetchImage();
-      Image.prefetch(url);
-      setPrefetched(url);
+      const image = await fetchImage();
+      Image.prefetch(image.url);
+      setPrefetched(image);
     } catch (err) {
       console.error.bind(err);
     }
     setFetching(false);
   };
 
-  const saveImageToLibrary = async () => {
-    setSaving(true);
-    try {
-      await MediaLibrary.saveToLibraryAsync(current);
-      Alert.alert("Saved!");
-    } catch (err) {
-      console.error.bind(err);
-      Alert.alert("Something went wrong...");
-    }
-    setSaving(false);
-  };
+  // const saveImageToLibrary = async () => {
+  //   setSaving(true);
+  //   try {
+  //     await MediaLibrary.saveToLibraryAsync(current.url);
+  //     Alert.alert("Saved!");
+  //   } catch (err) {
+  //     console.error.bind(err);
+  //     Alert.alert("Something went wrong...");
+  //   }
+  //   setSaving(false);
+  // };
 
-  const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
+  // const [permissionResponse, requestPermission] = MediaLibrary.usePermissions();
 
-  const saveImage = async () => {
-    if (permissionResponse && permissionResponse.granted) {
-      await saveImageToLibrary();
-    } else {
-      const newPermissions = await requestPermission();
+  // const saveImage = async () => {
+  //   if (permissionResponse && permissionResponse.granted) {
+  //     await saveImageToLibrary();
+  //   } else {
+  //     const newPermissions = await requestPermission();
 
-      if (newPermissions && newPermissions.granted) {
-        await saveImageToLibrary();
-      } else {
-        Alert.alert("Do not have permission to save.");
-      }
-    }
-  };
+  //     if (newPermissions && newPermissions.granted) {
+  //       await saveImageToLibrary();
+  //     } else {
+  //       Alert.alert("Do not have permission to save.");
+  //     }
+  //   }
+  // };
 
   const singleTap = Gesture.Tap()
     .maxDuration(250)
@@ -79,9 +81,10 @@ export const WaifuImage = ({ doubleTap }: { doubleTap: TapGesture }) => {
     });
 
   const longPress = Gesture.LongPress().onEnd(async () => {
-    if (!saving) {
-      await saveImage();
-    }
+    Linking.openURL(current.source);
+    // if (!saving) {
+    //   await saveImage();
+    // }
   });
 
   const tapGesture = Gesture.Exclusive(doubleTap, singleTap);
@@ -93,7 +96,7 @@ export const WaifuImage = ({ doubleTap }: { doubleTap: TapGesture }) => {
     </View>
   ) : current ? (
     <GestureDetector gesture={composed}>
-      <Image style={styles.image} source={current} contentFit="contain" />
+      <Image style={styles.image} source={current.url} contentFit="contain" />
     </GestureDetector>
   ) : (
     <Text>Something went wrong...</Text>
