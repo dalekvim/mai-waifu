@@ -1,12 +1,9 @@
 package com.example.datafrominternet.ui
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,17 +23,13 @@ fun WaifuImageApp() {
                 .padding(it),
             color = MaterialTheme.colors.background
         ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                val waifuViewModel: WaifuViewModel = viewModel(factory = WaifuViewModel.Factory)
+            val waifuViewModel: WaifuViewModel = viewModel(factory = WaifuViewModel.Factory)
 
-                HomeScreen(
-                    waifuUiState = waifuViewModel.waifuUiState,
-                    newImage = waifuViewModel::getWaifuImage
-                )
-            }
+            HomeScreen(
+                waifuUiState = waifuViewModel.waifuUiState,
+                newImage = waifuViewModel::getWaifuImage,
+                modifier = Modifier.fillMaxSize()
+            )
         }
     }
 }
