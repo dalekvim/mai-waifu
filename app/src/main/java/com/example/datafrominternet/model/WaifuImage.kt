@@ -9,6 +9,13 @@ data class Images(
 
 @Keep
 data class Waifu(
-    val source: String,
-    val url: String
+    val source: String?,
+    val url: String,
+    val tags: List<Tag>?
+)
+
+@Keep
+data class Tag(
+    val name: String,
+    val description: String
 )
