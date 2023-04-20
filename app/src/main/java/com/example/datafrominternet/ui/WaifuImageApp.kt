@@ -7,46 +7,44 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.datafrominternet.ui.fragments.WaifuSheetContentState
 import com.example.datafrominternet.ui.fragments.WaifuTopAppBar
 import com.example.datafrominternet.ui.screens.HomeScreen
-import com.example.datafrominternet.ui.screens.Tags
+import com.example.datafrominternet.ui.screens.TagViewModel
 import com.example.datafrominternet.ui.screens.WaifuViewModel
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun WaifuImageApp() {
+fun WaifuImageApp(
+    tagViewModel: TagViewModel = viewModel()
+) {
     val waifuViewModel: WaifuViewModel = viewModel(factory = WaifuViewModel.Factory)
 
-    var includedTags by rememberSaveable {
-        mutableStateOf(emptyList<Tags>())
-    }
-
-    val toggleIncludedTags = fun(tag: Tags) {
-        includedTags = if (tag in includedTags) {
-            includedTags.filter { it != tag }
-        } else {
-            includedTags + tag
-        }
-    }
-
-    val clearTags = fun() {
-        includedTags = emptyList()
-    }
+//    var includedTags by rememberSaveable {
+//        mutableStateOf(emptyList<Tags>())
+//    }
+//
+//    val toggleIncludedTags = fun(tag: Tags) {
+//        includedTags = if (tag in includedTags) {
+//            includedTags.filter { it != tag }
+//        } else {
+//            includedTags + tag
+//        }
+//    }
+//
+//    val clearTags = fun() {
+//        includedTags = emptyList()
+//    }
 
     BottomSheetScaffold(
         topBar = {
             WaifuTopAppBar(
                 waifuViewModel = waifuViewModel,
-                includedTags = includedTags,
-                clearTags = clearTags
+                includedTags = tagViewModel.includedTags,
+                clearTags = {}
             )
         },
         sheetContent = {
@@ -56,8 +54,8 @@ fun WaifuImageApp() {
             ) {
                 WaifuSheetContentState(
                     waifuViewModel = waifuViewModel,
-                    includedTags = includedTags,
-                    toggleIncludedTags = toggleIncludedTags,
+                    includedTags = tagViewModel.includedTags,
+                    toggleIncludedTags = tagViewModel::toggleIncludedTags,
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -71,7 +69,7 @@ fun WaifuImageApp() {
         ) {
             HomeScreen(
                 waifuViewModel = waifuViewModel,
-                includedTags = includedTags,
+                includedTags = tagViewModel.includedTags,
                 modifier = Modifier
                     .fillMaxSize()
             )
