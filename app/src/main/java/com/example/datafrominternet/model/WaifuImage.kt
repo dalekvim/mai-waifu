@@ -16,6 +16,5 @@ data class Waifu(
 
 @Keep
 data class Tag(
-    val name: String,
-    val description: String
+    val name: String
 )

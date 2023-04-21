@@ -12,15 +12,41 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.datafrominternet.ui.fragments.WaifuSheetContentState
 import com.example.datafrominternet.ui.fragments.WaifuTopAppBar
 import com.example.datafrominternet.ui.screens.HomeScreen
+import com.example.datafrominternet.ui.screens.TagViewModel
 import com.example.datafrominternet.ui.screens.WaifuViewModel
+
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun WaifuImageApp() {
+fun WaifuImageApp(
+    tagViewModel: TagViewModel = viewModel()
+) {
     val waifuViewModel: WaifuViewModel = viewModel(factory = WaifuViewModel.Factory)
 
+//    var includedTags by rememberSaveable {
+//        mutableStateOf(emptyList<Tags>())
+//    }
+//
+//    val toggleIncludedTags = fun(tag: Tags) {
+//        includedTags = if (tag in includedTags) {
+//            includedTags.filter { it != tag }
+//        } else {
+//            includedTags + tag
+//        }
+//    }
+//
+//    val clearTags = fun() {
+//        includedTags = emptyList()
+//    }
+
     BottomSheetScaffold(
-        topBar = { WaifuTopAppBar(waifuViewModel = waifuViewModel) },
+        topBar = {
+            WaifuTopAppBar(
+                waifuViewModel = waifuViewModel,
+                includedTags = tagViewModel.includedTags,
+                clearTags = {}
+            )
+        },
         sheetContent = {
             Surface(
                 color = MaterialTheme.colorScheme.background,
@@ -28,6 +54,8 @@ fun WaifuImageApp() {
             ) {
                 WaifuSheetContentState(
                     waifuViewModel = waifuViewModel,
+                    includedTags = tagViewModel.includedTags,
+                    toggleIncludedTags = tagViewModel::toggleIncludedTags,
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -41,6 +69,7 @@ fun WaifuImageApp() {
         ) {
             HomeScreen(
                 waifuViewModel = waifuViewModel,
+                includedTags = tagViewModel.includedTags,
                 modifier = Modifier
                     .fillMaxSize()
             )
